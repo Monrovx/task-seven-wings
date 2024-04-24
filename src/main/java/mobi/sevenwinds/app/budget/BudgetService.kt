@@ -17,7 +17,6 @@ object BudgetService {
                 this.type = body.type
                 this.authorId = body.authorId?.let { AuthorEntity[it].id }
             }
-
             return@transaction entity.toResponse()
         }
     }
@@ -25,9 +24,7 @@ object BudgetService {
     suspend fun getYearStats(param: BudgetYearParam): BudgetYearStatsResponse = withContext(Dispatchers.IO) {
         transaction {
             val query = prepareQuery(param)
-
             val total = query.count()
-
             val sumByType = BudgetEntity.wrapRows(query)
                 .groupBy { it.type.name }
                 .mapValues { it.value.sumOf { v -> v.amount } }
@@ -41,8 +38,8 @@ object BudgetService {
             return@transaction BudgetYearStatsResponse(
                 total = total,
                 totalByType = sumByType,
-                items = data,
-                )
+                items = data
+            )
         }
     }
 
