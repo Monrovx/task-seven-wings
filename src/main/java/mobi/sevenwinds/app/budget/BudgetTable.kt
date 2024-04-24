@@ -11,7 +11,7 @@ object BudgetTable : IntIdTable("budget") {
     val month = integer("month")
     val amount = integer("amount")
     val type = enumerationByName("type", 100, BudgetType::class)
-    val authorId = reference("author_id", AuthorTable)
+    val authorId = reference("author_id", AuthorTable).nullable()
 }
 
 class BudgetEntity(id: EntityID<Int>) : IntEntity(id) {
@@ -24,6 +24,6 @@ class BudgetEntity(id: EntityID<Int>) : IntEntity(id) {
     var authorId by BudgetTable.authorId
 
     fun toResponse(): BudgetRecord {
-        return BudgetRecord(year, month, amount, type, authorId.value)
+        return BudgetRecord(year, month, amount, type, authorId?.value)
     }
 }
