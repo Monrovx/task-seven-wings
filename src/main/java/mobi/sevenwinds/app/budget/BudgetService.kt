@@ -41,8 +41,8 @@ object BudgetService {
             return@transaction BudgetYearStatsResponse(
                 total = total,
                 totalByType = sumByType,
-                items = data
-            )
+                items = data,
+                )
         }
     }
 
